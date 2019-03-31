@@ -3,8 +3,10 @@
 namespace App\Documentation;
 
 use App\CommonMark\CodeBlockRenderer;
+use App\CommonMark\HeadingRenderer;
 use App\Documentation\Processor\DocumentationProcessorInterface;
 use League\CommonMark\Block\Element\FencedCode;
+use League\CommonMark\Block\Element\Heading;
 use League\CommonMark\DocParser;
 use League\CommonMark\Environment;
 use League\CommonMark\HtmlRenderer;
@@ -87,6 +89,7 @@ class DocumentationParser
     {
         $environment = Environment::createCommonMarkEnvironment();
         $environment->addBlockRenderer(FencedCode::class, new CodeBlockRenderer());
+        $environment->addBlockRenderer(Heading::class, new HeadingRenderer());
 
         return $environment;
     }
