@@ -54,7 +54,8 @@ header nav {
           color: $color-red;
         }
       }
-      .active {
+      a.active,
+      span.dropdown-header.active {
         color: $color-red;
       }
     }
