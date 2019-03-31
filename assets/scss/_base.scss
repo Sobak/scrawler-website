@@ -18,6 +18,13 @@ body > header {
   h1 {
     @include clear;
     font-size: 35px;
+
+    a {
+      color: #ccc;
+    }
+    a:hover {
+      color: $color-red;
+    }
   }
 }
 
