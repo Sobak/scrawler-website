@@ -134,7 +134,8 @@ main li:before {
 }
 
 h2 + pre,
-h2 + .note {
+h2 + .note,
+pre + .note {
   margin-top: 25px !important;
 }
 
