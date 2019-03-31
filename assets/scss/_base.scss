@@ -133,6 +133,11 @@ main li:before {
   position: relative;
 }
 
+main li ul,
+main li ol {
+  margin-top: 0;
+}
+
 h2 + pre,
 h2 + .note,
 pre + .note {
