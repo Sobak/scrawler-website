@@ -4,7 +4,6 @@ namespace App\Documentation;
 
 use App\CommonMark\CodeBlockRenderer;
 use App\Documentation\Processor\DocumentationProcessorInterface;
-use Exception;
 use League\CommonMark\Block\Element\FencedCode;
 use League\CommonMark\DocParser;
 use League\CommonMark\Environment;
@@ -71,10 +70,14 @@ class DocumentationParser
 
     protected function readFileFromScrawler(string $filename): string
     {
+        if (array_reverse(explode('.', $filename))[0] !== 'md') {
+            throw new FileNotFoundException();
+        }
+
         $path = $this->projectRoot . '/' . $this->scrawlerSourcesPath . '/' . $filename;
 
         if (is_file($path) === false || is_readable($path) === false) {
-            throw new Exception('File not found');
+            throw new FileNotFoundException();
         }
 
         return file_get_contents($path);

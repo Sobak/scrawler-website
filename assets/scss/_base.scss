@@ -4,7 +4,7 @@
 }
 
 html, body {
-  background-color: #181818;
+  background-color: $color-grey;
   color: #ccc;
   font-family: "Open Sans", sans-serif;
   margin: 0;
@@ -16,6 +16,7 @@ body > header {
   text-align: center;
 
   h1 {
+    @include clear;
     font-size: 35px;
   }
 }
@@ -24,15 +25,59 @@ header nav {
   float: right;
   margin-right: 25px;
 
-  ul li {
-    display: inline;
-    font-size: 1.05em;
-    list-style-type: none;
-    margin-right: 6px;
+  ul {
+    margin: 15px 20px 0 0;
+
+    & > {
+      margin-right: 5px;
+    }
+
+    li {
+      display: inline;
+      font-size: 1.05em;
+      list-style-type: none;
+
+      a,
+      span.dropdown-header {
+        color: $color-red-light;
+        cursor: pointer;
+        font-weight: 400;
+
+        &:hover {
+          color: $color-red;
+        }
+      }
+      .active {
+        color: $color-red;
+      }
+    }
   }
 
-  &:after {
-    @include clear();
+  span {
+    font-weight: 300;
+    margin-left: 5px;
+  }
+
+  li.dropdown {
+    position: relative;
+  }
+
+  li.dropdown > ul {
+    display: none;
+    margin-top: 0;
+    position: absolute;
+
+    li a {
+      background: $color-grey-light;
+      display: block;
+      min-width: 160px;
+      padding: 8px 16px;
+      text-align: left;
+    }
+  }
+
+  li.dropdown:hover > ul {
+    display: block;
   }
 }
 
@@ -41,7 +86,7 @@ a {
   text-decoration: none;
 
   &:hover {
-    color: #f77e75;
+    color: $color-red-light;
   }
 }
 
@@ -87,7 +132,7 @@ h2 + .note {
 }
 
 pre {
-  background: #222 !important;
+  background: $color-grey-light !important;
   margin: 0 -10000px !important;
   padding: 13px 10000px !important;
 }

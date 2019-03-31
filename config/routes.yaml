@@ -1,3 +1,15 @@
 index:
     path: /
     controller: App\Controller\HomeController::index
+
+docs:
+    path: docs/{file}
+    controller: App\Controller\DocumentationController::index
+    requirements:
+        file: .+
+
+root_docs:
+    path: "{file}"
+    controller: App\Controller\RootDocumentationController::index
+    requirements:
+        file: (contributing|changelog|license)

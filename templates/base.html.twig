@@ -9,13 +9,23 @@
 </head>
 <body>
 <header>
-    {#<nav>#}
-        {#<ul>#}
-            {#<li><a href="">Home</a></li>#}
-            {#<li><a href="">Docs</a></li>#}
-            {#<li><a href="">GitHub</a></li>#}
-        {#</ul>#}
-    {#</nav>#}
+    <nav>
+        <ul>
+            {% set route = app.request.get('_route') %}
+            <li><a href="{{ url('index') }}" {% if route == 'index' %}class="active"{% endif %}>Home</a> <span>/</span></li>
+            <li class="dropdown">
+                <span class="dropdown-header" {% if route == 'docs' %}class="active"{% endif %}>Docs</span> <span>/</span>
+                <ul>
+                    <li><a href="{{ url('docs', {file: 'configuration'}) }}">Configuration</a></li>
+                    <li><a href="{{ url('docs', {file: 'entities'}) }}">Entities</a></li>
+                    <li><a href="{{ url('docs', {file: 'blocks'}) }}">Block</a></li>
+                    <li><a href="{{ url('root_docs', {file: 'changelog'}) }}">Changelog</a></li>
+                    <li><a href="{{ url('docs', {file: 'roadmap'}) }}">Roadmap</a></li>
+                </ul>
+            </li>
+            <li><a href="https://github.com/Sobak/scrawler">GitHub</a></li>
+        </ul>
+    </nav>
     <h1><span class="em">S</span>obak's <span class="em">crawler</span></h1>
 </header>
 

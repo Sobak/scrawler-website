@@ -3,9 +3,9 @@
 }
 
 @mixin clear {
-  content: '';
+  content: "";
   clear: both;
-  display: table;
+  display: block;
 }
 
 @mixin hoverable($opacity: .2) {
