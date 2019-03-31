@@ -3,7 +3,7 @@
 namespace App\Documentation;
 
 use App\CommonMark\CodeBlockRenderer;
-use App\Kernel;
+use App\Documentation\Processor\DocumentationProcessorInterface;
 use Exception;
 use League\CommonMark\Block\Element\FencedCode;
 use League\CommonMark\DocParser;
@@ -15,6 +15,12 @@ class DocumentationParser
     protected $commonMarkRenderer;
 
     protected $commonMarkParser;
+
+    /** @var DocumentationProcessorInterface[] */
+    protected $preProcessors = [];
+
+    /** @var DocumentationProcessorInterface[] */
+    protected $postProcessors = [];
 
     protected $projectRoot;
 
@@ -30,13 +36,37 @@ class DocumentationParser
         $this->projectRoot = $projectRoot;
     }
 
+    public function addPreProcessor(DocumentationProcessorInterface $processor)
+    {
+        $this->preProcessors[] = $processor;
+
+        return $this;
+    }
+
+    public function addPostProcessor(DocumentationProcessorInterface $processor)
+    {
+        $this->postProcessors[] = $processor;
+
+        return $this;
+    }
+
     public function parseFile(string $filename): string
     {
         $contents = $this->readFileFromScrawler($filename);
 
+        foreach  ($this->preProcessors as $preProcessor) {
+            $contents = $preProcessor->process($contents);
+        }
+
         $document = $this->commonMarkParser->parse($contents);
 
-        return $this->commonMarkRenderer->renderBlock($document);
+        $html = $this->commonMarkRenderer->renderBlock($document);
+
+        foreach ($this->postProcessors as $postProcessor) {
+            $html = $postProcessor->process($html);
+        }
+
+        return $html;
     }
 
     protected function readFileFromScrawler(string $filename): string
