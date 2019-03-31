@@ -1,3 +1,7 @@
+###> app-specific ignores ###
+deploy.php
+###< app-specific ignores ###
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
