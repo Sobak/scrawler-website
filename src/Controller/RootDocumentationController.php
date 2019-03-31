@@ -24,6 +24,8 @@ class RootDocumentationController extends AbstractController
         $this->documentationParser->addPostProcessor(new InternalUrlPostProcessor());
         $this->documentationParser->addPostProcessor(new RootUrlsPostProcessor());
 
+        $file = strtoupper($file);
+
         try {
             return $this->render('documentation.html.twig', [
                 'html' => $this->documentationParser->parseFile("{$file}.md"),
