@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Documentation\DocumentationParser;
 use App\Documentation\Processor\HomeHeaderPreProcessor;
+use App\Documentation\Processor\NotePostProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -18,6 +19,7 @@ class HomeController extends AbstractController
     public function index()
     {
         $this->documentationParser->addPreProcessor(new HomeHeaderPreProcessor());
+        $this->documentationParser->addPostProcessor(new NotePostProcessor());
 
         return $this->render('documentation.html.twig', [
             'html' => $this->documentationParser->parseFile('README.md'),

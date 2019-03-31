@@ -81,7 +81,8 @@ main li:before {
   position: relative;
 }
 
-h2 + pre {
+h2 + pre,
+h2 + .note {
   margin-top: 25px !important;
 }
 
@@ -125,5 +126,27 @@ footer.footer {
     display: block;
     height: .5rem;
     visibility: hidden;
+  }
+}
+
+.note {
+  background: #375a7f;
+  border-top: 11px solid #375ACD;
+  color: #fff;
+  font-size: 0.95em;
+  margin: 0 4px;
+  padding: 0 14px 1px 14px;
+
+  p:first-child {
+    margin-top: 8px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
