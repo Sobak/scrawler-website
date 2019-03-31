@@ -1,0 +1,21 @@
+.em {
+  color: $color-red;
+}
+
+@mixin clear {
+  content: '';
+  clear: both;
+  display: table;
+}
+
+@mixin hoverable($opacity: .2) {
+  transition: opacity .4s ease, filter .4s ease;
+
+  filter: grayscale(100%);
+  opacity: $opacity;
+
+  &:hover {
+    opacity: 1;
+    filter: none;
+  }
+}

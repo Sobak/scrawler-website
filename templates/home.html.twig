@@ -1,0 +1,133 @@
+{% extends "base.html.twig" %}
+{% block content %}
+    <p><strong class="em">Scrawler</strong> is a declarative, scriptable web robot (crawler) and scrapper which
+        you can easily configure to parse any website and process the information into
+        the desired format.</p>
+
+    <p>Configuration is based on the building <em>blocks</em>, for which you can provide your
+        own implementations allowing for further customization of the process.</p>
+
+    <h2 id="install">Install</h2>
+
+    <p>As usual, start by installing the library with Composer:</p>
+
+    <pre class="keylighter" id="snippet" data-language="php"><span class="kl-language kl-php"><span class="kl-delimiter">&lt;?php</span>
+
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">App\PostEntity</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Block\ResultWriter\FilenameProvider\EntityPropertyFilenameProvider</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Block\ResultWriter\JsonFileResultWriter</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Block\UrlListProvider\ArgumentAdvancerUrlListProvider</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Configuration\Configuration</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Configuration\ObjectConfiguration</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Matcher\CssSelectorListMatcher</span><span class="kl-operator kl-punctuation">;</span>
+<span class="kl-keyword">use</span> <span class="kl-symbol kl-class">Sobak\Scrawler\Matcher\CssSelectorTextMatcher</span><span class="kl-operator kl-punctuation">;</span>
+
+<span class="kl-keyword">require</span> <span class="kl-string kl-single">'vendor/autoload.php'</span><span class="kl-operator kl-punctuation">;</span>
+
+<span class="kl-variable">$scrawler</span> = <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">Configuration</span>()<span class="kl-operator kl-punctuation">;</span>
+
+<span class="kl-variable">$scrawler</span>
+    -&gt;<span class="kl-call"><span class="kl-variable kl-property">setOperationName</span></span>(<span class="kl-string kl-single">'Sobakowy Blog'</span>)
+    -&gt;<span class="kl-call"><span class="kl-variable kl-property">setBaseUrl</span></span>(<span class="kl-string kl-single">'http://sobak.pl'</span>)
+    -&gt;<span class="kl-call"><span class="kl-variable kl-property">addUrlListProvider</span></span>(<span class="kl-keyword">new</span> <span class="kl-symbol kl-class">ArgumentAdvancerUrlListProvider</span>(<span class="kl-string kl-single">'http://sobak.pl/page/%u'</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-number">2</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-number">1</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-number">17</span>))
+    -&gt;<span class="kl-call"><span class="kl-variable kl-property">addObjectDefinition</span></span>(<span class="kl-string kl-single">'post'</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">CssSelectorListMatcher</span>(<span class="kl-string kl-single">'article.hentry'</span>)<span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">function</span> (ObjectConfiguration <span class="kl-variable">$object</span>) {
+        <span class="kl-variable">$object</span>
+            -&gt;<span class="kl-call"><span class="kl-variable kl-property">addFieldDefinition</span></span>(<span class="kl-string kl-single">'date'</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">CssSelectorTextMatcher</span>(<span class="kl-string kl-single">'time.entry-date'</span>))
+            -&gt;<span class="kl-call"><span class="kl-variable kl-property">addFieldDefinition</span></span>(<span class="kl-string kl-single">'content'</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">CssSelectorTextMatcher</span>(<span class="kl-string kl-single">'div.entry-content'</span>))
+            -&gt;<span class="kl-call"><span class="kl-variable kl-property">addFieldDefinition</span></span>(<span class="kl-string kl-single">'title'</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">CssSelectorTextMatcher</span>(<span class="kl-string kl-single">'h1.entry-title'</span>))
+            -&gt;<span class="kl-call"><span class="kl-variable kl-property">addEntityMapping</span></span>(<span class="kl-symbol kl-class">PostEntity</span>::<span class="kl-keyword">class</span>)
+            -&gt;<span class="kl-call"><span class="kl-variable kl-property">addResultWriter</span></span>(<span class="kl-symbol kl-class">PostEntity</span>::<span class="kl-keyword">class</span><span class="kl-operator kl-punctuation">,</span> <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">JsonFileResultWriter</span>([
+                <span class="kl-string kl-single">'directory'</span> =&gt; <span class="kl-string kl-single">'posts/'</span><span class="kl-operator kl-punctuation">,</span>
+                <span class="kl-string kl-single">'filename'</span> =&gt; <span class="kl-keyword">new</span> <span class="kl-symbol kl-class">EntityPropertyFilenameProvider</span>([
+                    <span class="kl-string kl-single">'property'</span> =&gt; <span class="kl-string kl-single">'slug'</span><span class="kl-operator kl-punctuation">,</span>
+                ])<span class="kl-operator kl-punctuation">,</span>
+            ]))
+        <span class="kl-operator kl-punctuation">;</span>
+        })
+<span class="kl-operator kl-punctuation">;</span>
+
+<span class="kl-keyword">return</span> <span class="kl-variable">$scrawler</span><span class="kl-operator kl-punctuation">;</span></span></pre>
+
+    <p>After saving the configuration file (perhaps as a <code>config.php</code>) all you have to
+        do is execute this command:</p>
+
+    <pre><code class="bash language-bash">php vendor/bin/scrawler crawl config.php
+        </code></pre>
+
+    <p>The example shown above will fetch <a href="">http://sobak.pl</a> page, then it will iterate
+        over post pages starting from 2nd up to 17th, get all posts on each page, map them
+        to <code>App\PostEntity</code> objects and finally write the results down to individual JSON
+        files using post slugs as filenames.</p>
+
+    <p>As you can see with this short code, almost half of it being the imports,
+        you can easily achieve quite tedious task for which you would otherwise need
+        to get a few libraries, define rules to follow, provide correct map to write
+        down the file... Scrawler does it all for you!</p>
+
+    <blockquote>
+        <p><strong>Note:</strong> Scrawler <em>does not</em> aim to execute client side code, by design.
+            This completely is doable (look at headless Chrome or even phantom.js if
+            you like history) but I consider it out of scope for this project and have
+            no interest in developing it. Thanks for understanding.</p>
+    </blockquote>
+
+    <h2 id="documentation">Documentation</h2>
+
+    <blockquote>
+        <p><strong>Note:</strong> some parts of the documentation are still under construction.</p>
+    </blockquote>
+
+    <p>For the detailed documentation please check the table of contents below.</p>
+
+    <ul>
+        <li><a href="docs/configuration.md">Configuration</a></li>
+
+        <li><a href="docs/entities.md">Entities</a></li>
+
+        <li><a href="docs/blocks.md">Blocks</a></li>
+
+        <li><a href="CHANGELOG.md">Changelog</a></li>
+
+        <li><a href="docs/roadmap.md">Roadmap</a></li>
+    </ul>
+
+    <p>The most interesting section is probably "Blocks". <em>Block</em> in Scrawler is an
+        abstracted, swappable piece of logic defining the crawling, scrapping or result
+        processing operations which you can customize using one of many builtin classes
+        or even your own, tailored implementation. Looking at the example above, you
+        could provide custom logic for <code>UrlListProvider</code> or <code>ResultWriter</code> (just
+        examples for many of the available block types).</p>
+
+    <blockquote>
+        <p><strong>Note:</strong> I have to admit I am not a fan of excessive DocBlocks usage.
+            That's why documentation in the code is sparse and focuses mainly
+            on interfaces, especially ones for creating custom implementation
+            of blocks. Use the documentation linked above and obviously read the
+            code.</p>
+    </blockquote>
+
+    <h2 id="dontbeadick">Don't be a dick</h2>
+
+    <p>Before you start tinkering with a library, please remember: some people do not want
+        their websites to be scrapped by bots. With growing percentage of bandwidth being
+        caused by bots it might not only be considered problematic from the business
+        standpoint but also expensive to handle all that traffic. Please respect that.
+        Even though Scrawler provides implementations for some blocks, which might be useful
+        to mimic the actual internet user, you should not use them to bypass security
+        measures taken by website owners.</p>
+
+    <blockquote>
+        <p><strong>Note:</strong> For the testing purposes you can freely crawl <a href="http://sobak.pl">my website</a>,
+            <em>excluding</em> its subdomains. Just please leave the default user agent.</p>
+    </blockquote>
+
+    <h2 id="license">License</h2>
+
+    <p>Scrawler is distributed under the MIT license. For the details please check the
+        dedicated <a href="LICENSE.md">LICENSE</a> file.</p>
+
+    <h2 id="contributing">Contributing</h2>
+
+    <p>For the details on how to contribute please check the dedicated
+        <a href="CONTRIBUTING.md">CONTRIBUTING</a> file.</p>
+{% endblock %}

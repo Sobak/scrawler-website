@@ -1,12 +1,33 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Scrawler</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500&amp;subset=latin-ext">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300,500&amp;subset=latin-ext">
+</head>
+<body>
+<header>
+    {#<nav>#}
+        {#<ul>#}
+            {#<li><a href="">Home</a></li>#}
+            {#<li><a href="">Docs</a></li>#}
+            {#<li><a href="">GitHub</a></li>#}
+        {#</ul>#}
+    {#</nav>#}
+    <h1><span class="em">S</span>obak's <span class="em">crawler</span></h1>
+</header>
+
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    Created by <a href="http://sobak.pl">Sobak</a>
+    <span class="separator">/</span>
+    Check the <a href="https://github.com/Sobak/scrawler">source code</a>
+</footer>
+
+</body>
 </html>
