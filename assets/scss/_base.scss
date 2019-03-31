@@ -81,6 +81,10 @@ main li:before {
   position: relative;
 }
 
+h2 + pre {
+  margin-top: 25px !important;
+}
+
 pre {
   background: #222 !important;
   margin: 0 -10000px !important;

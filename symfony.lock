@@ -1,4 +1,10 @@
 {
+    "kadet/keylighter": {
+        "version": "dev-master"
+    },
+    "league/commonmark": {
+        "version": "0.18.5"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
