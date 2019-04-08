@@ -17,4 +17,3 @@ services:
     App\Documentation\DocumentationParser:
         arguments:
             $scrawlerSourcesPath: '%env(SCRAWLER_SOURCES)%'
-            $projectRoot: '%kernel.project_dir%'

@@ -23,18 +23,15 @@ class DocumentationParser
     /** @var DocumentationProcessorInterface[] */
     protected $postProcessors = [];
 
-    protected $projectRoot;
-
     protected $scrawlerSourcesPath;
 
-    public function __construct(string $scrawlerSourcesPath, string $projectRoot)
+    public function __construct(string $scrawlerSourcesPath)
     {
         $commonMarkEnvironment = $this->configureCommonMarkEnvironment();
 
         $this->scrawlerSourcesPath = $scrawlerSourcesPath;
         $this->commonMarkParser = new DocParser($commonMarkEnvironment);
         $this->commonMarkRenderer = new HtmlRenderer($commonMarkEnvironment);
-        $this->projectRoot = $projectRoot;
     }
 
     public function addPreProcessor(DocumentationProcessorInterface $processor)
@@ -76,7 +73,7 @@ class DocumentationParser
             throw new FileNotFoundException();
         }
 
-        $path = $this->projectRoot . '/' . $this->scrawlerSourcesPath . '/' . $filename;
+        $path = $this->scrawlerSourcesPath . '/' . $filename;
 
         if (is_file($path) === false || is_readable($path) === false) {
             throw new FileNotFoundException();
