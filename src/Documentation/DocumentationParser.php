@@ -3,12 +3,11 @@
 namespace App\Documentation;
 
 use App\CommonMark\CodeBlockRenderer;
-use App\CommonMark\HeadingRenderer;
 use App\Documentation\Processor\DocumentationProcessorInterface;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
-use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Parser\MarkdownParser;
 use League\CommonMark\Renderer\HtmlRenderer;
 
@@ -85,10 +84,22 @@ class DocumentationParser
 
     protected function configureCommonMarkEnvironment(): Environment
     {
-        $environment = new Environment();
+        $config = [
+            'heading_permalink' => [
+                'html_class' => 'heading-permalink',
+                'id_prefix' => '',
+                'fragment_prefix' => '',
+                'insert' => 'after',
+                'min_heading_level' => 1,
+                'max_heading_level' => 4,
+                'symbol' => '#',
+            ],
+        ];
+
+        $environment = new Environment($config);
         $environment->addExtension(new CommonMarkCoreExtension());
+        $environment->addExtension(new HeadingPermalinkExtension());
         $environment->addRenderer(FencedCode::class, new CodeBlockRenderer());
-        $environment->addRenderer(Heading::class, new HeadingRenderer());
 
         return $environment;
     }

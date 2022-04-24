@@ -113,6 +113,22 @@ h2, h3, h4 {
   margin-bottom: -5px;
 }
 
+.heading-permalink {
+  visibility: hidden;
+  color: $color-red-light;
+  font-size: 0.9em;
+  padding-left: 4px;
+}
+
+h1:hover .heading-permalink,
+h2:hover .heading-permalink,
+h3:hover .heading-permalink,
+h4:hover .heading-permalink,
+h5:hover .heading-permalink,
+h6:hover .heading-permalink {
+  visibility: visible;
+}
+
 main ul {
   margin-top: 0.75em;
   margin-bottom: 0.75em;
