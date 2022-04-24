@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b63fad5cf26c93489abf858f2f85134",
+    "content-hash": "a4dd5086b7be04280a7722ba1419b61f",
     "packages": [
         {
             "name": "kadet/keylighter",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kadet1090/KeyLighter.git",
-                "reference": "0f9d68e69609db0321d44e9b8a5b96b0b4fd2041"
+                "reference": "0f9d68e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kadet1090/KeyLighter/zipball/0f9d68e69609db0321d44e9b8a5b96b0b4fd2041",
-                "reference": "0f9d68e69609db0321d44e9b8a5b96b0b4fd2041",
+                "url": "https://api.github.com/repos/kadet1090/KeyLighter/zipball/0f9d68e",
+                "reference": "0f9d68e",
                 "shasum": ""
             },
             "require": {
@@ -40,12 +40,12 @@
             ],
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Kadet\\Highlighter\\": "."
-                },
                 "files": [
                     "./functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Kadet\\Highlighter\\": "."
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
