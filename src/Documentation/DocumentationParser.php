@@ -59,6 +59,7 @@ class DocumentationParser
         $document = $this->commonMarkParser->parse($contents);
 
         $html = $this->commonMarkRenderer->renderDocument($document);
+        $html = $html->getContent();
 
         foreach ($this->postProcessors as $postProcessor) {
             $html = $postProcessor->process($html);
