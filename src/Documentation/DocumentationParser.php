@@ -5,11 +5,12 @@ namespace App\Documentation;
 use App\CommonMark\CodeBlockRenderer;
 use App\CommonMark\HeadingRenderer;
 use App\Documentation\Processor\DocumentationProcessorInterface;
-use League\CommonMark\Block\Element\FencedCode;
-use League\CommonMark\Block\Element\Heading;
-use League\CommonMark\DocParser;
-use League\CommonMark\Environment;
-use League\CommonMark\HtmlRenderer;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Parser\MarkdownParser;
+use League\CommonMark\Renderer\HtmlRenderer;
 
 class DocumentationParser
 {
@@ -30,7 +31,7 @@ class DocumentationParser
         $commonMarkEnvironment = $this->configureCommonMarkEnvironment();
 
         $this->scrawlerSourcesPath = $scrawlerSourcesPath;
-        $this->commonMarkParser = new DocParser($commonMarkEnvironment);
+        $this->commonMarkParser = new MarkdownParser($commonMarkEnvironment);
         $this->commonMarkRenderer = new HtmlRenderer($commonMarkEnvironment);
     }
 
@@ -58,7 +59,7 @@ class DocumentationParser
 
         $document = $this->commonMarkParser->parse($contents);
 
-        $html = $this->commonMarkRenderer->renderBlock($document);
+        $html = $this->commonMarkRenderer->renderDocument($document);
 
         foreach ($this->postProcessors as $postProcessor) {
             $html = $postProcessor->process($html);
@@ -84,9 +85,10 @@ class DocumentationParser
 
     protected function configureCommonMarkEnvironment(): Environment
     {
-        $environment = Environment::createCommonMarkEnvironment();
-        $environment->addBlockRenderer(FencedCode::class, new CodeBlockRenderer());
-        $environment->addBlockRenderer(Heading::class, new HeadingRenderer());
+        $environment = new Environment();
+        $environment->addExtension(new CommonMarkCoreExtension());
+        $environment->addRenderer(FencedCode::class, new CodeBlockRenderer());
+        $environment->addRenderer(Heading::class, new HeadingRenderer());
 
         return $environment;
     }

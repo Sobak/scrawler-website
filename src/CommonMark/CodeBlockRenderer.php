@@ -4,16 +4,21 @@ namespace App\CommonMark;
 
 use Kadet\Highlighter\Formatter\HtmlFormatter;
 use Kadet\Highlighter\Language\Language;
-use League\CommonMark\Block\Element\AbstractBlock;
-use League\CommonMark\Block\Renderer\BlockRendererInterface;
-use League\CommonMark\ElementRendererInterface;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
 
-class CodeBlockRenderer implements BlockRendererInterface
+class CodeBlockRenderer implements NodeRendererInterface
 {
-    public function render(AbstractBlock $block, ElementRendererInterface $htmlRenderer, $inTightList = false)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer): string
     {
-        $source = $block->getStringContent();
-        $languageName = $block->getInfo();
+        if (!($node instanceof FencedCode)) {
+            throw new \InvalidArgumentException('Incompatible node type: ' . get_class($node));
+        }
+
+        $source = $node->getLiteral();
+        $languageName = $node->getInfo();
 
         $language = Language::byName(empty($languageName) ? 'text' : $languageName);
         $formatter = new HtmlFormatter();
