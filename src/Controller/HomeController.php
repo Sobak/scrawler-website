@@ -10,17 +10,18 @@ use App\Documentation\Processor\InternalUrlPostProcessor;
 use App\Documentation\Processor\NotePostProcessor;
 use App\Documentation\Processor\RootUrlsPostProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
 {
-    protected $documentationParser;
+    private DocumentationParser $documentationParser;
 
     public function __construct(DocumentationParser $documentationParser)
     {
         $this->documentationParser = $documentationParser;
     }
 
-    public function index()
+    public function index(): Response
     {
         $this->documentationParser->addPreProcessor(new HomeHeaderPreProcessor());
         $this->documentationParser->addPostProcessor(new NotePostProcessor());

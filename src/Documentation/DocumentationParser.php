@@ -15,17 +15,17 @@ use League\CommonMark\Renderer\HtmlRenderer;
 
 class DocumentationParser
 {
-    protected $commonMarkRenderer;
+    private HtmlRenderer $commonMarkRenderer;
 
-    protected $commonMarkParser;
-
-    /** @var DocumentationProcessorInterface[] */
-    protected $preProcessors = [];
+    private MarkdownParser $commonMarkParser;
 
     /** @var DocumentationProcessorInterface[] */
-    protected $postProcessors = [];
+    private array $preProcessors = [];
 
-    protected $scrawlerSourcesPath;
+    /** @var DocumentationProcessorInterface[] */
+    private array $postProcessors = [];
+
+    private string $scrawlerSourcesPath;
 
     public function __construct(string $scrawlerSourcesPath)
     {
@@ -36,20 +36,26 @@ class DocumentationParser
         $this->commonMarkRenderer = new HtmlRenderer($commonMarkEnvironment);
     }
 
-    public function addPreProcessor(DocumentationProcessorInterface $processor)
+    public function addPreProcessor(DocumentationProcessorInterface $processor): self
     {
         $this->preProcessors[] = $processor;
 
         return $this;
     }
 
-    public function addPostProcessor(DocumentationProcessorInterface $processor)
+    public function addPostProcessor(DocumentationProcessorInterface $processor): self
     {
         $this->postProcessors[] = $processor;
 
         return $this;
     }
 
+    /**
+     * @param string $filename
+     * @return string
+     *
+     * @throws FileNotFoundException
+     */
     public function parseFile(string $filename): string
     {
         $contents = $this->readFileFromScrawler($filename);
@@ -70,7 +76,13 @@ class DocumentationParser
         return $html;
     }
 
-    protected function readFileFromScrawler(string $filename): string
+    /**
+     * @param string $filename
+     * @return string
+     *
+     * @throws FileNotFoundException
+     */
+    private function readFileFromScrawler(string $filename): string
     {
         if (array_reverse(explode('.', $filename))[0] !== 'md') {
             throw new FileNotFoundException();
@@ -85,7 +97,7 @@ class DocumentationParser
         return file_get_contents($path);
     }
 
-    protected function configureCommonMarkEnvironment(): Environment
+    private function configureCommonMarkEnvironment(): Environment
     {
         $config = [
             'heading_permalink' => [

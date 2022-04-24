@@ -10,17 +10,18 @@ use App\Documentation\Processor\InternalUrlPostProcessor;
 use App\Documentation\Processor\NotePostProcessor;
 use App\Documentation\Processor\RootUrlsPostProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class RootDocumentationController extends AbstractController
 {
-    protected $documentationParser;
+    private DocumentationParser $documentationParser;
 
     public function __construct(DocumentationParser $documentationParser)
     {
         $this->documentationParser = $documentationParser;
     }
 
-    public function index($file)
+    public function index($file): Response
     {
         $this->documentationParser->addPostProcessor(new NotePostProcessor());
         $this->documentationParser->addPostProcessor(new InternalUrlPostProcessor());

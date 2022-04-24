@@ -15,7 +15,7 @@ class NotePostProcessor implements DocumentationProcessorInterface
         }, $documentation);
     }
 
-    protected function ucfirst($string)
+    private function ucfirst(string $string): string
     {
         $strlen = mb_strlen($string);
         $firstChar = mb_substr($string, 0, 1);
