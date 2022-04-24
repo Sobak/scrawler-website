@@ -15,6 +15,13 @@
         "symfony/webpack-encore-bundle": "^1.4",
         "symfony/yaml": "4.2.*"
     },
+    "require-dev": {
+        "symfony/debug-bundle": "4.2.*",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/stopwatch": "4.2.*",
+        "symfony/web-profiler-bundle": "4.2.*",
+        "symfony/web-server-bundle": "4.2.*"
+    },
     "config": {
         "preferred-install": {
             "*": "dist"
@@ -62,12 +69,5 @@
             "allow-contrib": false,
             "require": "4.2.*"
         }
-    },
-    "require-dev": {
-        "symfony/debug-bundle": "4.2.*",
-        "symfony/monolog-bundle": "^3.0",
-        "symfony/stopwatch": "4.2.*",
-        "symfony/web-profiler-bundle": "4.2.*",
-        "symfony/web-server-bundle": "4.2.*"
     }
 }
