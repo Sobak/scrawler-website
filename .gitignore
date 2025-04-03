@@ -1,4 +1,5 @@
 ###> app-specific ignores ###
+/.idea/
 deploy.php
 ###< app-specific ignores ###
 
